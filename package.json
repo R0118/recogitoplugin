@@ -1,0 +1,44 @@
+{
+  "name": "mn-thesaurus-plugin",
+  "version": "0.1.0",
+  "description": "Recogito plugin for tags from the MN thesaurus",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "prepare": "npm run build",
+    "build": "tsc && npm run copy-assets",
+    "copy-assets": "copyfiles -u 1 \"src/**/*.css\" \"src/assets/**/*\" dist",
+    "dev": "npm start --prefix .dev/",
+    "dev:rebuild": "nodemon --watch src --ext ts,tsx,js,jsx,css,json --ignore dist/ --exec \"npm run build\"",
+    "dev:watch": "concurrently \"npm run dev:rebuild\" \"npm run dev\""
+  },
+  "files": [
+    "dist",
+    "src/api"
+  ],
+  "exports": {
+    ".": "./dist/index.js",
+    "./AdminExtension": "./dist/AdminExtension.js",
+    "./EditorExtension": "./dist/EditorExtension.js"
+  },
+  "dependencies": {
+    "@annotorious/react": "^3.8.9",
+    "@phosphor-icons/react": "2.1.7",
+    "@radix-ui/react-dialog": "^1.1.23",
+    "@radix-ui/react-visually-hidden": "^1.2.11",
+    "@recogito/studio-sdk": "^0.9.1",
+    "use-debounce": "^10.0.6"
+  },
+  "devDependencies": {
+    "@types/node": "^22.18.7",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "astro": "^7.0.0",
+    "concurrently": "^9.2.1",
+    "copyfiles": "^2.4.1",
+    "nodemon": "^3.1.10",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "typescript": "^5.9.3"
+  }
+}
