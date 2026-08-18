@@ -1,4 +1,4 @@
-export const PURPOSE = 'classifying';
+export const PURPOSE = 'mn-thesaurus';
 
 export const THESAURUS_URL = 'https://thesaurus.mn.cenagis.edu.pl';
 
