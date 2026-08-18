@@ -19,8 +19,7 @@
   ],
   "exports": {
     ".": "./dist/index.js",
-    "./AdminExtension": "./dist/AdminExtension.js",
-    "./EditorExtension": "./dist/EditorExtension.js",
+    "./ThesaurusEditorExtension": "./dist/EditorExtension.js",
     "./thumbnail.jpg": "./thumbnail.jpg"
   },
   "dependencies": {
