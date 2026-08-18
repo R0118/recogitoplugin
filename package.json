@@ -14,12 +14,14 @@
   },
   "files": [
     "dist",
-    "src/api"
+    "src/api",
+    "thumbnail.jpg"
   ],
   "exports": {
     ".": "./dist/index.js",
     "./AdminExtension": "./dist/AdminExtension.js",
-    "./EditorExtension": "./dist/EditorExtension.js"
+    "./EditorExtension": "./dist/EditorExtension.js",
+    "./thumbnail.jpg": "./thumbnail.jpg"
   },
   "dependencies": {
     "@annotorious/react": "^3.8.9",
