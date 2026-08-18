@@ -1,7 +1,7 @@
 {
   "name": "mn-thesaurus-plugin",
   "version": "0.1.0",
-  "description": "Recogito plugin for tags from the MN thesaurus",
+  "description": "Recogito plugin for tags from the Mare Nostrum Lab thesaurus",
   "type": "module",
   "main": "src/index.ts",
   "scripts": {

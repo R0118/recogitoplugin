@@ -3,10 +3,10 @@ import type { AstroIntegration } from 'astro';
 import { Plugin, registerPlugin } from '@recogito/studio-sdk';
 
 const ThesaurusPlugin: Plugin = {
-  name: 'MN Thesaurus',
+  name: 'Mare Nostrum Lab Thesaurus',
   module_name: 'mn-thesaurus-plugin',
-  description: 'Tags from the MN thesaurus.',
-  author: 'MN',
+  description: 'Tags from the Mare Nostrum Lab thesaurus.',
+  author: 'Mare Nostrum Lab',
   homepage: 'https://thesaurus.mn.cenagis.edu.pl',
   thumbnail: 'thumbnail.jpg',
   extensions: [{

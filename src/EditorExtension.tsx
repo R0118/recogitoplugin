@@ -74,7 +74,7 @@ const SearchDialog = (props: {
         <Dialog.Overlay className="mn-th-dialog-overlay" />
         <Dialog.Content className="mn-th-dialog not-annotatable">
           <VisuallyHidden>
-            <Dialog.Title>MN Thesaurus search</Dialog.Title>
+            <Dialog.Title>Mare Nostrum Thesaurus search</Dialog.Title>
           </VisuallyHidden>
 
           <header className="mn-th-dialog-header">

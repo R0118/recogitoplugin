@@ -5,7 +5,7 @@ import './AdminExtension.css';
 
 export const AdminExtension = (_props: AdminExtensionProps) => (
   <div className="mn-th-admin">
-    <p>MN Thesaurus for Recogito</p>
+    <p>Mare Nostrum Lab Thesaurus for Recogito</p>
 
     <h3>Indexed classes</h3>
     <ul>
