@@ -20,3 +20,18 @@
 .mn-th-admin code {
   margin-right: 0.35em;
 }
+
+.mn-th-admin-option {
+  align-items: flex-start;
+  display: flex;
+  gap: 0.45rem;
+  margin: 0.75rem 0;
+}
+
+.mn-th-admin-option input {
+  margin-top: 0.15rem;
+}
+
+.mn-th-admin button {
+  margin-bottom: 0.5rem;
+}

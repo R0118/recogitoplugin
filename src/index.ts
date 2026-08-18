@@ -10,6 +10,10 @@ const ThesaurusPlugin: Plugin = {
   homepage: 'https://thesaurus.mn.cenagis.edu.pl',
   thumbnail: 'thumbnail.jpg',
   extensions: [{
+    name: 'mn-thesaurus-admin',
+    component_name: 'ThesaurusAdminExtension',
+    extension_point: 'admin'
+  }, {
     name: 'mn-thesaurus-editor',
     component_name: 'ThesaurusEditorExtension',
     extension_point: 'annotation:*:annotation-editor'

@@ -8,6 +8,15 @@ export const LANGUAGE = 'en';
 
 export const SEARCH_LIMIT = 100;
 
+export const SEARCH_FROM_SELECTION_DEFAULT = true;
+
+export type ThesaurusSettings = {
+  searchFromSelection?: boolean;
+};
+
+export const usesSearchFromSelection = (settings?: ThesaurusSettings) =>
+  settings?.searchFromSelection ?? SEARCH_FROM_SELECTION_DEFAULT;
+
 export interface ThesaurusData {
   id: string;
   title: string;

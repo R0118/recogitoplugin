@@ -19,6 +19,7 @@
   ],
   "exports": {
     ".": "./dist/index.js",
+    "./ThesaurusAdminExtension": "./dist/AdminExtension.js",
     "./ThesaurusEditorExtension": "./dist/EditorExtension.js",
     "./thumbnail.jpg": "./thumbnail.jpg"
   },

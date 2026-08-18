@@ -1,17 +1,29 @@
 import { useEffect, useState } from 'react';
-import { AnnotationEditorExtensionProps } from '@recogito/studio-sdk';
+import { AnnotationEditorExtensionProps, SupabaseAnnotation } from '@recogito/studio-sdk';
 import { createBody } from '@annotorious/react';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { Spinner } from '@recogito/studio-sdk/components';
 import { MagnifyingGlass, PencilSimple, Tag, Trash, X } from '@phosphor-icons/react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { useDebounce } from 'use-debounce';
-import {  SEARCH_LIMIT, PURPOSE, type ThesaurusData } from './config';
+import { SEARCH_LIMIT, PURPOSE, usesSearchFromSelection, type ThesaurusData, type ThesaurusSettings } from './config';
 
 import './EditorExtension.css';
 
 const uriID = (uri: string) =>
   uri.includes('/entity/') ? uri.split('/').pop() || uri : uri;
+
+const getQuote = (annotation: SupabaseAnnotation): string | undefined => {
+  const selector = Array.isArray(annotation.target?.selector)
+    ? annotation.target.selector[0]
+    : annotation.target?.selector;
+
+  const quote = (selector as { quote?: string; exact?: string } | undefined)?.quote
+    || (selector as { quote?: string; exact?: string } | undefined)?.exact;
+
+  const trimmed = quote?.replace(/\s+/g, ' ').trim();
+  return trimmed || undefined;
+};
 
 const parsedata = (value?: string): ThesaurusData | undefined => {
   if (!value) return;
@@ -129,10 +141,13 @@ const SearchDialog = (props: {
 };
 
 export const ThesaurusEditorExtension = (props: AnnotationEditorExtensionProps) => {
-  const { annotation, me, isSelected } = props;
+  const { annotation, me, isSelected, settings } = props;
   const [concept, setConcept] = useState<ThesaurusData | undefined>();
   const [showSearch, setShowSearch] = useState(false);
   const isMine = me.id === annotation.target.creator?.id;
+  const searchFromSelection = usesSearchFromSelection(settings as ThesaurusSettings | undefined);
+  const quote = getQuote(annotation);
+  const searchQuery = concept?.title || (searchFromSelection ? quote : undefined);
 
   const saveConcept = (next: ThesaurusData) => {
     props.onUpdateAnnotation({
@@ -191,13 +206,13 @@ export const ThesaurusEditorExtension = (props: AnnotationEditorExtensionProps) 
       ) : (
         <button type="button" className="mn-th-add unstyled" onClick={() => setShowSearch(true)}>
           <Tag size={16} />
-          Add thesaurus tag
+          Add Mare Nostrum thesaurus tag
         </button>
       )}
 
       {showSearch && (
         <SearchDialog
-          initialQuery={concept?.title}
+          initialQuery={searchQuery}
           onClose={() => setShowSearch(false)}
           onSelect={saveConcept} />
       )}
