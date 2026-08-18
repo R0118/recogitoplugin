@@ -128,7 +128,7 @@ const SearchDialog = (props: {
   );
 };
 
-export const EditorExtension = (props: AnnotationEditorExtensionProps) => {
+export const ThesaurusEditorExtension = (props: AnnotationEditorExtensionProps) => {
   const { annotation, me, isSelected } = props;
   const [concept, setConcept] = useState<ThesaurusData | undefined>();
   const [showSearch, setShowSearch] = useState(false);
@@ -204,3 +204,5 @@ export const EditorExtension = (props: AnnotationEditorExtensionProps) => {
     </div>
   );
 };
+
+export const EditorExtension = ThesaurusEditorExtension;
