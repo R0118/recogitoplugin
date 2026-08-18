@@ -10,8 +10,8 @@ export const AdminExtension = (_props: AdminExtensionProps) => (
     <h3>Indexed classes</h3>
     <ul>
       {THESAURUS_DICTS.map(dict => (
-        <li key={type.id}>
-          <code>{type.id}</code> {type.label}
+        <li key={dict.id}>
+          <code>{dict.id}</code> {dict.label}
         </li>
       ))}
     </ul>

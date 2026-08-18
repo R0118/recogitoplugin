@@ -36,7 +36,7 @@ const search = async (query: string): Promise<ThesaurusData[]> => {
   return data.results || [];
 };
 
-const searchDialog = (props: {
+const SearchDialog = (props: {
   initialQuery?: string;
   onClose(): void;
   onSelect(concept: ThesaurusData): void;
@@ -196,7 +196,7 @@ export const EditorExtension = (props: AnnotationEditorExtensionProps) => {
       )}
 
       {showSearch && (
-        {searchDialog}
+        <SearchDialog
           initialQuery={concept?.title}
           onClose={() => setShowSearch(false)}
           onSelect={saveConcept} />
