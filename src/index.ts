@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url';
 import type { AstroIntegration } from 'astro';
 import { Plugin, registerPlugin } from '@recogito/studio-sdk';
 
@@ -22,15 +23,14 @@ const ThesaurusPlugin: Plugin = {
 const plugin = (): AstroIntegration => ({
   name: 'mn-thesaurus',
   hooks: {
-    'astro:config:setup': ({config, logger, addAPI}) => {
+    'astro:config:setup': ({ config, logger, injectRoute }) => {
       registerPlugin(ThesaurusPlugin, config, logger);
 
       logger.info('API: /api/mn-thesaurus/search');
 
-      addAPI({
+      injectRoute({
         pattern: '/api/mn-thesaurus/search',
-        entrypoint: 'node_modules/mn-thesaurus-plugin/src/api/search.ts',
-        prerender: false
+        entrypoint: fileURLToPath(new URL('../src/api/search.ts', import.meta.url))
       });
     }
   }
