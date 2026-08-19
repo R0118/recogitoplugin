@@ -38,7 +38,18 @@ export const THESAURUS_DICTS: { id: string; label: string }[] = [
   { id: 'Q786', label: 'Harris matrix relationships' },
   { id: 'Q790', label: 'trench parameters' },
   { id: 'Q793', label: 'visual item metadata' },
-  { id: 'Q796', label: 'linguistic object metadata' }
+  { id: 'Q796', label: 'linguistic object metadata' },
+  { id: 'Q1415', label: 'lamp type' },
+  { id: 'Q1457', label: 'table ware type' },
+  { id: 'Q2061', label: 'type of element' },
+  { id: 'Q2062', label: 'material' },
+  { id: 'Q2063', label: 'stone mark' },
+  { id: 'Q2064', label: 'style' },
+  { id: 'Q2065', label: 'component' },
+  { id: 'Q2066', label: 'functional type' },
+  { id: 'Q2067', label: 'architectural state of preservation' },
+  { id: 'Q2068', label: 'ornaments' },
+  { id: 'Q2069', label: 'Kato Paphos Archaeological Landscape' }
 ];
 
 export const DICT_LABELS = Object.fromEntries(
