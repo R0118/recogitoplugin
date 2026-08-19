@@ -8,6 +8,8 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { useDebounce } from 'use-debounce';
 import { SEARCH_LIMIT, PURPOSE, usesSearchFromSelection, type ThesaurusData, type ThesaurusSettings } from './config';
 
+type SearchOpts = { disabledDicts?: string[] };
+
 import './EditorExtension.css';
 
 const uriID = (uri: string) =>
@@ -41,8 +43,10 @@ const parsedata = (value?: string): ThesaurusData | undefined => {
   }
 };
 
-const search = async (query: string): Promise<ThesaurusData[]> => {
+const doSearch = async (query: string, opts?: SearchOpts): Promise<ThesaurusData[]> => {
   const params = new URLSearchParams({ q: query, limit: String(SEARCH_LIMIT) });
+  if (opts?.disabledDicts?.length)
+    params.set('disabled', opts.disabledDicts.join(','));
   const response = await fetch(`/api/mn-thesaurus/search?${params}`);
   const data = await response.json();
   return data.results || [];
@@ -50,6 +54,7 @@ const search = async (query: string): Promise<ThesaurusData[]> => {
 
 const SearchDialog = (props: {
   initialQuery?: string;
+  disabledDicts?: string[];
   onClose(): void;
   onSelect(concept: ThesaurusData): void;
 }) => {
@@ -70,7 +75,7 @@ const SearchDialog = (props: {
 
     setSearching(true);
     setError(undefined);
-    search(q)
+    doSearch(q, { disabledDicts: props.disabledDicts })
       .then(setResults)
       .catch(err => {
         console.error(err);
@@ -86,7 +91,7 @@ const SearchDialog = (props: {
         <Dialog.Overlay className="mn-th-dialog-overlay" />
         <Dialog.Content className="mn-th-dialog not-annotatable">
           <VisuallyHidden>
-            <Dialog.Title>Mare Nostrum Thesaurus search</Dialog.Title>
+            <Dialog.Title>MN Thesaurus search</Dialog.Title>
           </VisuallyHidden>
 
           <header className="mn-th-dialog-header">
@@ -145,7 +150,9 @@ export const ThesaurusEditorExtension = (props: AnnotationEditorExtensionProps) 
   const [concept, setConcept] = useState<ThesaurusData | undefined>();
   const [showSearch, setShowSearch] = useState(false);
   const isMine = me.id === annotation.target.creator?.id;
-  const searchFromSelection = usesSearchFromSelection(settings as ThesaurusSettings | undefined);
+  const pluginSettings = settings as ThesaurusSettings | undefined;
+  const searchFromSelection = usesSearchFromSelection(pluginSettings);
+  const disabledDicts = pluginSettings?.disabledDicts;
   const quote = getQuote(annotation);
   const searchQuery = concept?.title || (searchFromSelection ? quote : undefined);
 
@@ -213,6 +220,7 @@ export const ThesaurusEditorExtension = (props: AnnotationEditorExtensionProps) 
       {showSearch && (
         <SearchDialog
           initialQuery={searchQuery}
+          disabledDicts={disabledDicts}
           onClose={() => setShowSearch(false)}
           onSelect={saveConcept} />
       )}

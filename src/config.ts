@@ -12,6 +12,7 @@ export const SEARCH_FROM_SELECTION_DEFAULT = true;
 
 export type ThesaurusSettings = {
   searchFromSelection?: boolean;
+  disabledDicts?: string[];
 };
 
 export const usesSearchFromSelection = (settings?: ThesaurusSettings) =>

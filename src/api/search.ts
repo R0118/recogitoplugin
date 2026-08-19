@@ -12,8 +12,14 @@ import {
 const fixq = (value: string) =>
   value.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\s+/g, ' ').trim();
 
-const createsparql = (query: string, limit: number) => {
-  const typeValues = THESAURUS_DICTS
+const createsparql = (query: string, limit: number, disabledDicts?: string[]) => {
+  const activeDicts = disabledDicts?.length
+    ? THESAURUS_DICTS.filter(d => !disabledDicts.includes(d.id))
+    : THESAURUS_DICTS;
+
+  if (activeDicts.length === 0) return '';
+
+  const typeValues = activeDicts
     .map(({ id, label }) => `    wd:${id}    # ${label}`)
     .join('\n');
 
@@ -31,7 +37,9 @@ const createsparql = (query: string, limit: number) => {
         ?item schema:description ?descL .
         FILTER(LANG(?descL) = "${LANGUAGE}")
       }
-      ?item wdt:P2/wdt:P20* ?type .
+      { ?item wdt:P1/wdt:P2* ?type }
+      UNION { ?item wdt:P2+ ?type }
+      UNION { ?item wdt:P20+ ?type }
       VALUES ?type {
     ${typeValues}
       }
@@ -41,14 +49,16 @@ const createsparql = (query: string, limit: number) => {
     `;
 };
 
-const search = async (query: string, limit: number): Promise<ThesaurusData[]> => {
+const search = async (query: string, limit: number, disabledDicts?: string[]): Promise<ThesaurusData[]> => {
+  const sparql = createsparql(query, limit, disabledDicts);
+  if (!sparql) return [];
   const headers = {
     'User-Agent': 'Recogito-MN',
     Accept: 'application/sparql-results+json'
   };
 
   const params = new URLSearchParams({
-    query: createsparql(query, limit),
+    query: sparql,
     format: 'json'
   });
 
@@ -105,8 +115,10 @@ export const GET: APIRoute = async ({ url }) => {
     if (!Number.isNaN(parsed)) limit = parsed;
   }
 
+  const disabled = url.searchParams.get('disabled')?.split(',').filter(Boolean);
+
   try {
-    return Response.json({ results: await search(query, limit) });
+    return Response.json({ results: await search(query, limit, disabled) });
   } catch (error) {
     console.warn('mn sparql failed:', error);
     return Response.json({

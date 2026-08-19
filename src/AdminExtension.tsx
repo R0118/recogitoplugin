@@ -6,11 +6,34 @@ import './AdminExtension.css';
 
 export const ThesaurusAdminExtension = (props: AdminExtensionProps) => {
   const settings = props.settings as ThesaurusSettings | undefined;
+
   const [searchFromSelection, setSearchFromSelection] = useState(
     usesSearchFromSelection(settings)
   );
 
-  const dirty = searchFromSelection !== usesSearchFromSelection(settings);
+  const [disabledDicts, setDisabledDicts] = useState<string[]>(
+    settings?.disabledDicts || []
+  );
+
+  const isDirty = () => {
+    const origSearch = usesSearchFromSelection(settings);
+    const origDisabled = settings?.disabledDicts || [];
+    return searchFromSelection !== origSearch
+      || disabledDicts.sort().join() !== [...origDisabled].sort().join();
+  };
+
+  const toggleDict = (id: string) => {
+    setDisabledDicts(prev =>
+      prev.includes(id) ? prev.filter(d => d !== id) : [...prev, id]
+    );
+  };
+
+  const onSave = () => {
+    props.onChangeUserSettings({
+      searchFromSelection,
+      disabledDicts: disabledDicts.length > 0 ? disabledDicts : undefined
+    });
+  };
 
   return (
     <div className="mn-th-admin">
@@ -25,22 +48,29 @@ export const ThesaurusAdminExtension = (props: AdminExtensionProps) => {
         Use selected annotation text as the thesaurus search query
       </label>
 
-      <button
-        type="button"
-        className="primary"
-        disabled={!dirty}
-        onClick={() => props.onChangeUserSettings({ searchFromSelection })}>
-        Save Settings
-      </button>
-
-      <h3>Indexed classes</h3>
-      <ul>
+      <h3>Dictionaries</h3>
+      <ul className="mn-th-dict-list">
         {THESAURUS_DICTS.map(dict => (
           <li key={dict.id}>
-            <code>{dict.id}</code> {dict.label}
+            <label className="mn-th-admin-option">
+              <input
+                type="checkbox"
+                checked={!disabledDicts.includes(dict.id)}
+                onChange={() => toggleDict(dict.id)}
+              />
+              <code>{dict.id}</code> {dict.label}
+            </label>
           </li>
         ))}
       </ul>
+
+      <button
+        type="button"
+        className="primary"
+        disabled={!isDirty()}
+        onClick={onSave}>
+        Save Settings
+      </button>
     </div>
   );
 };
